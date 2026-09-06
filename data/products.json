@@ -1,0 +1,101 @@
+[
+  {
+    "id": 1,
+    "title": "رژگونه مایع شیگلم",
+    "price": 1250,
+    "image": "/images/blusher.jpg",
+    "description": "Apple iPhone 16 Pro 256GB",
+    "category": "رژگونه",
+    "stock": 15
+  },
+  {
+    "id": 2,
+    "title": "رژگونه کره ای شیگلم",
+    "price": 1099,
+    "image": "/images/sticky-blusher.jpg",
+    "description": "Samsung Galaxy S25 256GB",
+    "category": "رژگونه",
+    "stock": 20
+  },
+  {
+    "id": 3,
+    "title": "کانسیلر مایع شیگلم",
+    "price": 1700,
+    "image": "/images/conceler.jpg",
+    "description": "Apple MacBook Air M4 16GB RAM",
+    "category": "کانسیلر",
+    "stock": 8
+  },
+  {
+    "id": 4,
+    "title": "روغن لب شیگلم",
+    "price": 1899,
+    "image": "/images/lip-oil.jpg",
+    "description": "Dell XPS 15 Intel Core Ultra",
+    "category": "رژلب",
+    "stock": 6
+  },
+  {
+    "id": 5,
+    "title": "پلامپر لب شیگلم",
+    "price": 569,
+    "image": "/images/lip-plump.jpg",
+    "description": "Wireless Noise Cancelling Headphones",
+    "category": "رژلب",
+    "stock": 30
+  },
+  {
+    "id": 6,
+    "title": "ریمل دو سر شیگلم",
+    "price": 499,
+    "image": "/images/mascara.jpg",
+    "description": "Apple Watch Series 10 GPS",
+    "category": "ریمل",
+    "stock": 18
+  },
+  {
+    "id": 7,
+    "title": "ریمل ضد آب شیگلم",
+    "price": 499,
+    "image": "/images/whaterproof-mascara.jpg",
+    "description": "Apple Watch Series 10 GPS",
+    "category": "ریمل",
+    "stock": 18
+  },
+  {
+    "id": 8,
+    "title": "تینت لب صورتی شیگلم",
+    "price": 499,
+    "image": "/images/tint.jpg",
+    "description": "Apple Watch Series 10 GPS",
+    "category": "رژلب",
+    "stock": 18
+  },
+  {
+    "id": 9,
+    "title": "پرایمر نقره ای شبگلم",
+    "price": 1500,
+    "image": "/images/primer.jpg",
+    "description": "Apple Watch Series 10 GPS",
+    "category": "پرایمر",
+    "stock": 18
+  },
+  {
+    "id": 10,
+    "title": "رژلب جامد شیگلم",
+    "price": 499,
+    "image": "/images/lipstick.jpeg",
+    "description": "Apple Watch Series 10 GPS",
+    "category": "رژلب",
+    "stock": 18
+  },
+  {
+    "id": 11,
+    "title": "کوشن کرمی شیگلم",
+    "price": 499,
+    "image": "/images/coation.jpg",
+    "description": "Apple Watch Series 10 GPS",
+    "category": "کرم",
+    "stock": 18
+  }
+]

@@ -1,0 +1,106 @@
+[
+  {
+    "userID": 1786301536201,
+    "items": [
+      {
+        "id": 10,
+        "title": "رژلب جامد شیگلم",
+        "price": 499,
+        "image": "/images/lipstick.jpeg",
+        "description": "Apple Watch Series 10 GPS",
+        "category": "رژلب",
+        "stock": 18,
+        "count": 1
+      },
+      {
+        "id": 7,
+        "title": "ریمل ضد آب شیگلم",
+        "price": 499,
+        "image": "/images/whaterproof-mascara.jpg",
+        "description": "Apple Watch Series 10 GPS",
+        "category": "ریمل",
+        "stock": 18,
+        "count": 1
+      },
+      {
+        "id": 11,
+        "title": "کوشن کرمی شیگلم",
+        "price": 499,
+        "image": "/images/coation.jpg",
+        "description": "Apple Watch Series 10 GPS",
+        "category": "کرم",
+        "stock": 18,
+        "count": 1
+      },
+      {
+        "id": 8,
+        "title": "تینت لب صورتی شیگلم",
+        "price": 499,
+        "image": "/images/tint.jpg",
+        "description": "Apple Watch Series 10 GPS",
+        "category": "رژلب",
+        "stock": 18,
+        "count": 1
+      }
+    ]
+  },
+  {
+    "userID": 2,
+    "items": [
+      {
+        "id": 10,
+        "title": "رژلب جامد شیگلم",
+        "price": 499,
+        "image": "/images/lipstick.jpeg",
+        "description": "Apple Watch Series 10 GPS",
+        "category": "رژلب",
+        "stock": 18,
+        "count": 3
+      }
+    ]
+  },
+  {
+    "userID": 1,
+    "items": [
+      {
+        "id": 3,
+        "title": "کانسیلر مایع شیگلم",
+        "price": 1700,
+        "image": "/images/conceler.jpg",
+        "description": "Apple MacBook Air M4 16GB RAM",
+        "category": "کانسیلر",
+        "stock": 8,
+        "count": 2
+      },
+      {
+        "id": 2,
+        "title": "رژگونه کره ای شیگلم",
+        "price": 1099,
+        "image": "/images/sticky-blusher.jpg",
+        "description": "Samsung Galaxy S25 256GB",
+        "category": "رژگونه",
+        "stock": 20,
+        "count": 2
+      }
+    ]
+  },
+  {
+    "userID": 1787326866902,
+    "items": [
+      {
+        "id": 10,
+        "title": "رژلب جامد شیگلم",
+        "price": 499,
+        "image": "/images/lipstick.jpeg",
+        "description": "Apple Watch Series 10 GPS",
+        "category": "رژلب",
+        "stock": 18,
+        "count": 2
+      }
+    ]
+  },
+  {
+    "userID": 1787582338207,
+    "items": []
+  }
+]
