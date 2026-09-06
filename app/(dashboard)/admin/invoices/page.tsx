@@ -75,7 +75,12 @@
 
 
 
-
+type Invoice = {
+  id: number;
+  userID: number;
+  status: string;
+  // بقیه فیلدهای invoice
+};
 
 
 'use client'
@@ -83,7 +88,7 @@
 import { useEffect, useState } from "react";
 
 function InvoicesList() {
-    const [invoices, setInvoices] = useState([]);
+    const [invoices, setInvoices] = useState<Invoice[]>([]);
 
     useEffect(() => {
         const fetchList = async () => {
