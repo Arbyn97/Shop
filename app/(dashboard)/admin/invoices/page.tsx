@@ -1,78 +1,4 @@
-// 'use client'
-// import { useEffect, useState } from "react";
-
-// function InvoicesList() {
-// const [invoices,setInvoices]=useState([])
-
-// useEffect(()=>{
-
-
-//     const fetchList=async()=>{
-//         const response=await fetch("/api/invoices")
-//         const data=await response.json()
-//         setInvoices(data)
-//         console.log(invoices)
-//     }
-//     fetchList();
-// },[])
-
-
-
-//     return ( 
-//         <>
-//         <div>
-//         <table>
-//             <thead>
-//                 <tr>
-                 
-//                   <th>شماره فاکتور</th>
-//                   <th>کد کاربر</th>
-//                   <th>ایتم های خرید</th>
-//                   <th>وضعیت سفارش</th>
-//                   <th>عملیات</th>
-//                   </tr>
-//             </thead>
-           
-//             <tbody>
-
-//                     {invoices.map((invoice)=>{
-//                     return(
-//                         <tr key= {invoice.id}>
-                            
-//                             <td>
-//                                 {invoice.id}
-//                             </td>
-                        
-//                         <td>
-//                              {invoice.userID}
-//                         </td>
-//                         <td>
-//                              {invoice.items.length}
-//                         </td>
-//                         <td>
-//                              {invoice.status}
-//                         </td>
-//                         <td>
-//                             Delete
-//                         </td>
-//                         </tr>
-//                     )
-//                 })}
-           
-
-//             </tbody>
-            
-                
-           
-//         </table>
-//         </div>
-//         </>
-//      );
-// }
-
-// export default InvoicesList;
-
-
+'use client'
 
 
 type Invoice = {
@@ -83,7 +9,7 @@ type Invoice = {
 };
 
 
-'use client'
+
 
 import { useEffect, useState } from "react";
 
