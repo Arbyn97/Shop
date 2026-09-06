@@ -1,0 +1,33 @@
+[
+  {
+    "id": 1,
+    "name": "Ali",
+    "email": "ali@gmail.com",
+    "password": "123456Ab!",
+    "role": "admin"
+  },
+  {
+    "id": 2,
+    "name": "Sara",
+    "email": "sara@gmail.com",
+    "password": "123456Aa@"
+  },
+  {
+    "id": 1786301536201,
+    "name": "nazi",
+    "email": "kara@gmail.com",
+    "password": "123987Sd@"
+  },
+  {
+    "id": 1787326866902,
+    "name": "sara",
+    "email": "hsm@gmail.com",
+    "password": "jhkjhQ3!"
+  },
+  {
+    "id": 1787582338207,
+    "name": "nazi",
+    "email": "nazi1@gmail.com",
+    "password": "123456Aa@"
+  }
+]
