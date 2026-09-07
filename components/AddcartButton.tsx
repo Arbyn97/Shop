@@ -2,7 +2,14 @@
 
 import { CartContext } from "@/context/CartContext";
 import { useContext } from "react";
-import { Product } from "@/types/product";
+
+export type Product = {
+  id: number;
+  title: string;
+  price: number;
+  image:string
+};
+
 type Props = {
   data: Product;
 };
