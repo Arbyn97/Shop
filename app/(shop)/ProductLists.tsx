@@ -1,5 +1,5 @@
 import AddCartButton from "@/components/AddcartButton";
-// import { Product } from "@/types/product";
+
 import Image from "next/image";
 import Link from "next/link";
 
