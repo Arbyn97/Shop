@@ -5,6 +5,7 @@ type Invoice = {
   id: number;
   userID: number;
   status: string;
+   items: any[];
   // بقیه فیلدهای invoice
 };
 
