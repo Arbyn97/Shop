@@ -1,11 +1,23 @@
 'use client'
 
 
+
+type InvoiceItem = {
+  id: number;
+  title: string;
+  price: number;
+  image: string;
+  description: string;
+  category: string;
+  stock: number;
+  count: number;
+};
+
 type Invoice = {
   id: number;
   userID: number;
   status: string;
-   items: any[];
+   items:  InvoiceItem[];
   // بقیه فیلدهای invoice
 };
 
