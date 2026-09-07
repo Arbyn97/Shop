@@ -1,72 +1,16 @@
-// 'use client'
-
-// import { useEffect, useState } from "react";
-
-// function manageUsers() {
-//     const [users,setUsers]=useState([])
-//         useEffect(()=>{
-//             const  fetchData=async()=>{
-//                     const data=await fetch("/api/users");
-//                     const response=await data.json();
-//                     console.log(response)
-//                     setUsers(response)
-//             }
-//             fetchData();
-
-//         },[])
-
-
-    
-//     return (
-//         <>
-//         <div>
-//         <table>
-//             <thead>
-//                 <tr>
-                 
-//                   <th>نام</th>
-//                   <th>ایمیل</th>
-//                   <th>عملیات</th>
-//                   </tr>
-//             </thead>
-           
-//             <tbody>
-
-//                     {users.map((user)=>{
-//                     return(
-//                         <tr key= {user.id}>
-                        
-//                         <td>
-//                              {user.name}
-//                         </td>
-//                         <td>
-//                              {user.email}
-//                         </td>
-//                         <td>
-//                             Delete
-//                         </td>
-//                         </tr>
-//                     )
-//                 })}
-           
-
-//             </tbody>
-            
-                
-           
-//         </table>
-//         </div>
-//         </>
-//       );
-// }
-
-// export default manageUsers;
 'use client'
 
 import { useEffect, useState } from "react";
 
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+};
+
 function ManageUsers() {
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState<User[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
