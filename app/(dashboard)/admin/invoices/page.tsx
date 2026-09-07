@@ -1,5 +1,8 @@
+
+
 'use client'
 
+import { useEffect, useState } from "react";
 
 
 type InvoiceItem = {
@@ -15,7 +18,7 @@ type InvoiceItem = {
 
 type Invoice = {
   id: number;
-  userID: number;
+  userID: string;
   status: string;
    items:  InvoiceItem[];
   // بقیه فیلدهای invoice
@@ -24,7 +27,6 @@ type Invoice = {
 
 
 
-import { useEffect, useState } from "react";
 
 function InvoicesList() {
     const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -97,7 +99,7 @@ function InvoicesList() {
                                         </td>
 
                                         <td className="px-6 py-4 text-gray-600">
-                                            {invoice.items.length} مورد
+                                            {invoice.items.length} 
                                         </td>
 
                                         <td className="px-6 py-4">
