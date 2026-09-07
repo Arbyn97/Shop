@@ -1,11 +1,19 @@
 import AddCartButton from "@/components/AddcartButton";
-import { Product } from "@/types/product";
+// import { Product } from "@/types/product";
 import Image from "next/image";
 import Link from "next/link";
+
+export type Product = {
+  id: number;
+  title: string;
+  price: number;
+  image:string
+};
 
 type CartsProps = {
   details: Product[];
 };
+
 
 function ProductLists({details}:CartsProps) {
     return (  
