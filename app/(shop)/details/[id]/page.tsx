@@ -9,7 +9,14 @@ import Image from "next/image";
   }>;
 };
 
-import { Product } from "@/types/product";
+
+export type Product = {
+  id: number;
+  title: string;
+  price: number;
+  image:string
+};
+
 import AddCartButton from "../../../../components/AddcartButton";
 import { allProducts } from "@/lib/allProducts";
 async function ProductDetails({ params }: Props) {
