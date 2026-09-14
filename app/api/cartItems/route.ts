@@ -1,27 +1,29 @@
+
+
 import { NextResponse } from "next/server";
-import fs from "fs/promises";
-import path from "path";
+import { supabase } from "@/lib/supabase";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const filePath = path.join(
-      process.cwd(),
-      "data",
-      "cartItems.json"
-    );
+    const { data: existingCart, error: findError } = await supabase
+      .from("cartItems")
+      .select("*")
+      .eq("userID", body.userID)
+      .maybeSingle();
 
-    const file = await fs.readFile(
-      filePath,
-      "utf-8"
-    );
+    if (findError) {
+      console.error(findError);
 
-    const cartItems = JSON.parse(file);
-
-    const existingCart = cartItems.find(
-      (item: any) => item.userID === body.userID
-    );
+      return NextResponse.json(
+        {
+          message: "Error finding cart",
+          error: findError.message,
+        },
+        { status: 500 }
+      );
+    }
 
     if (existingCart) {
       return NextResponse.json(
@@ -38,140 +40,173 @@ export async function POST(request: Request) {
       items: body.items,
     };
 
-    cartItems.push(newCart);
+    const { data, error } = await supabase
+      .from("cartItems")
+      .insert([newCart])
+      .select()
+      .single();
 
-    await fs.writeFile(
-      filePath,
-      JSON.stringify(cartItems, null, 2)
-    );
+    if (error) {
+      console.error(error);
+
+      return NextResponse.json(
+        {
+          message: "Error creating cart",
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json(
       {
         message: "Cart created",
-        cart: newCart,
+        cart: data,
       },
       { status: 201 }
     );
-
   } catch (error) {
     console.error(error);
 
     return NextResponse.json(
-      { message: "error in cart" },
+      { message: "Error in cart" },
       { status: 500 }
     );
   }
 }
 
-
 export async function GET(request: Request) {
   try {
-
     const { searchParams } = new URL(request.url);
 
-    const userID = Number(
-      searchParams.get("userID")
-    );
+    const userID = searchParams.get("userID");
 
+    if (!userID) {
+      return NextResponse.json(
+        { message: "userID is required" },
+        { status: 400 }
+      );
+    }
 
-    const filePath = path.join(
-      process.cwd(),
-      "data",
-      "cartItems.json"
-    );
+    const { data, error } = await supabase
+      .from("cartItems")
+      .select("*")
+      .eq("userID", userID)
+      .maybeSingle();
 
+    if (error) {
+      console.error(error);
 
-    const file = await fs.readFile(
-      filePath,
-      "utf-8"
-    );
+      return NextResponse.json(
+        {
+          message: "Error getting cart",
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
 
-
-    const cartItems = JSON.parse(file);
-
-
-    const userCart = cartItems.find(
-      (item: any) => item.userID === userID
-    );
-
-
-    if (!userCart) {
-
+    if (!data) {
       return NextResponse.json({
         userID,
         items: [],
       });
-
     }
 
-
-    return NextResponse.json(userCart);
-
-
+    return NextResponse.json(data);
   } catch (error) {
+    console.error(error);
 
     return NextResponse.json(
       {
-        message: "error getting cart",
+        message: "Error getting cart",
       },
       {
         status: 500,
       }
     );
-
   }
 }
 
-
-
 export async function PUT(request: Request) {
   try {
-
     const body = await request.json();
-    
-    const filePath = path.join(
-      process.cwd(),
-      "data",
-      "cartItems.json"
-    );
 
-    const file = await fs.readFile(
-      filePath,
-      "utf-8"
-    );
+    const { data: existingCart, error: findError } = await supabase
+      .from("cartItems")
+      .select("*")
+      .eq("userID", body.userID)
+      .maybeSingle();
 
-    const cartItems = JSON.parse(file);
+    if (findError) {
+      console.error(findError);
 
-    const cartIndex = cartItems.findIndex(
-      (item: any) =>
-        item.userID === body.userID
-    );
-
-    if (cartIndex === -1) {
-
-      // اگر کاربر هنوز سبد ندارد
-      cartItems.push({
-        userID: body.userID,
-        items: body.items,
-      });
-
-    } else {
-
-      // اگر قبلاً سبد دارد
-      cartItems[cartIndex].items = body.items;
-
+      return NextResponse.json(
+        {
+          message: "Error finding cart",
+          error: findError.message,
+        },
+        { status: 500 }
+      );
     }
 
-    await fs.writeFile(
-      filePath,
-      JSON.stringify(cartItems, null, 2)
-    );
+    if (!existingCart) {
+      const { data, error } = await supabase
+        .from("cartItems")
+        .insert([
+          {
+            userID: body.userID,
+            items: body.items,
+          },
+        ])
+        .select()
+        .single();
+
+      if (error) {
+        console.error(error);
+
+        return NextResponse.json(
+          {
+            message: "Error creating cart",
+            error: error.message,
+          },
+          { status: 500 }
+        );
+      }
+
+      return NextResponse.json({
+        message: "Cart created",
+        cart: data,
+      });
+    }
+
+    const { data, error } = await supabase
+      .from("cartItems")
+      .update({
+        items: body.items,
+      })
+      .eq("userID", body.userID)
+      .select()
+      .single();
+
+    if (error) {
+      console.error(error);
+
+      return NextResponse.json(
+        {
+          message: "Error updating cart",
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       message: "Cart updated",
+      cart: data,
     });
-
   } catch (error) {
+    console.error(error);
 
     return NextResponse.json(
       {
@@ -181,6 +216,5 @@ export async function PUT(request: Request) {
         status: 500,
       }
     );
-
   }
 }
