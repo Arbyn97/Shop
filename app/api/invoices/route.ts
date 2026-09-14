@@ -1,83 +1,112 @@
+
+
 import { NextResponse } from "next/server";
-import invoices from "@/data/invoices.json";
-
-import fs from "fs/promises";
-import path from "path";
-
-const filePath = path.join(
-  process.cwd(),
-  "data",
-  "invoices.json"
-);
+import { supabase } from "@/lib/supabase";
 
 export async function GET() {
-   const file = await fs.readFile(filePath, "utf-8");
-  const invoices = JSON.parse(file);
-  return NextResponse.json(invoices);
+  try {
+    const { data, error } = await supabase
+      .from("invoices")
+      .select("*");
+
+    if (error) {
+      console.error(error);
+
+      return NextResponse.json(
+        { message: "خطا در دریافت سفارش‌ها", error: error.message },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error(error);
+
+    return NextResponse.json(
+      { message: "خطا در دریافت سفارش‌ها" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: Request) {
-  const newInvoice = await request.json();
+  try {
+    const newInvoice = await request.json();
 
-   const file = await fs.readFile(filePath, "utf-8");
-  const invoices = JSON.parse(file);
+    const { data, error } = await supabase
+      .from("invoices")
+      .insert([newInvoice])
+      .select()
+      .single();
 
-  invoices.push(newInvoice);
+    if (error) {
+      console.error(error);
 
-  
-    await fs.writeFile(
-    filePath,
-    JSON.stringify(invoices, null, 2)
-  );
+      return NextResponse.json(
+        {
+          message: "خطا در ایجاد سفارش",
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
 
+    return NextResponse.json(
+      {
+        message: "Invoice created successfully",
+        invoice: data,
+      },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error(error);
 
-  return NextResponse.json(
-    {
-      message: "Invoice created successfully",
-      invoice: newInvoice,
-    },
-    { status: 201 }
-  );
+    return NextResponse.json(
+      { message: "خطا در ایجاد سفارش" },
+      { status: 500 }
+    );
+  }
 }
 
-
 export async function PUT(req: Request) {
-  try { 
+  try {
     const body = await req.json();
 
-    const filePath = path.join(
-      process.cwd(),
-      "data",
-      "invoices.json"
-    );
+    const { data, error } = await supabase
+      .from("invoices")
+      .update({
+        status: body.status,
+      })
+      .eq("userID", body.userID)
+      .select()
+      .single();
 
-   const file = await fs.readFile(filePath, "utf-8");
-const invoices = JSON.parse(file);
+    if (error) {
+      console.error(error);
 
-    const invoiceIndex = invoices.findIndex(
-      (invoice: any) => invoice.userID === body.userID
-    );
+      return NextResponse.json(
+        {
+          message: "خطا در تغییر وضعیت سفارش",
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
 
-    if (invoiceIndex === -1) {
+    if (!data) {
       return NextResponse.json(
         { message: "سفارش پیدا نشد" },
         { status: 404 }
       );
     }
 
-    invoices[invoiceIndex].status = body.status;
-
-   await fs.writeFile(
-  filePath,
-  JSON.stringify(invoices, null, 2)
-);
-
     return NextResponse.json({
       message: "وضعیت سفارش تغییر کرد",
-      invoice: invoices[invoiceIndex],
+      invoice: data,
     });
-
   } catch (error) {
+    console.error(error);
+
     return NextResponse.json(
       { message: "خطا در تغییر وضعیت سفارش" },
       { status: 500 }
