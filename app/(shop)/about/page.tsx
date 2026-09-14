@@ -112,13 +112,7 @@ function About() {
             مشاهده و مدیریت کند.
           </p>
         </section>
-            <section className="mt-8 rounded-2xl border border-gray-200 bg-gray-50 p-6">
-                <p className="text-lg leading-9 text-gray-600">
-  در توسعه این پروژه از هوش مصنوعی به عنوان دستیار برنامه‌نویسی
-  برای یادگیری مفاهیم، بررسی و بهبود کد، رفع خطاها و حل مسائل
-  فنی استفاده شده است.
-</p>
-            </section>
+           
       </div>
     </main> );
 }
