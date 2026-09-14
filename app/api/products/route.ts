@@ -6,7 +6,8 @@ export async function GET() {
   try {
     const { data, error } = await supabase
       .from("products")
-      .select("*");
+      .select("*")
+       .order("id", { ascending: true });
 
     if (error) {
       console.error("GET products error:", error);
