@@ -1,167 +1,223 @@
 import { NextResponse } from "next/server";
-import products from '@/data/products.json'
+import { supabase } from "@/lib/supabase";
 
-import fs from "fs/promises";
-import path from "path";
-
-
+// GET
 export async function GET() {
-    return NextResponse.json(products)
-    
-}
+  try {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*");
 
-export async function PUT(request:Request){
-    try{
-        const body=await request.json();
-    const filePath=path.join(
-        process.cwd(),
-        "data",
-        "products.json"
-    )
-    const file=await fs.readFile(filePath,"utf-8")
-    const products=JSON.parse(file)
-    const index=products.findIndex((item:any)=>
-        item.id===body.id
-    )
-    if (index === -1) {
-          return NextResponse.json(
-            { message: "کالا پیدا نشد" },
-            { status: 404 }
-          );
-        }
-    
-       products[index] = {
-  ...products[index],
-  ...body
-};
-       await fs.writeFile(
-      filePath,
-      JSON.stringify(products, null, 2)
-    );
-    
-        return NextResponse.json({
-          message: "ویرایش انجام شد",
-          product: products[index],
-        });
-    
-      } catch (error) {
-        return NextResponse.json(
-          { message: "خطا در تغییر اطلاعات کالا" },
-          { status: 500 }
-        );
-      }
-
-}
-export async function DELETE(request:Request){
-    try{
-        const body=await request.json();
-    const filePath=path.join(
-        process.cwd(),
-        "data",
-        "products.json"
-    )
-    const file=await fs.readFile(filePath,"utf-8")
-    const products=JSON.parse(file)
-
-    const existProduct=products.find(
-      (item:any)=>
-        item.id === body.id
-    )
-
-    if(!existProduct)
-    {
-       return NextResponse.json(
-
-        {  message: "کالا پیدا نشد"},
-        {status: 404 },
-        );
-
-    }
-
-    const newProducts=products.filter((item:any)=>
-        item.id !== body.id
-    )
-   
-    
-      
-    
-       await fs.writeFile(
-      filePath,
-      JSON.stringify(newProducts, null, 2)
-    );
-    
-        return NextResponse.json({
-          message: "کالا حذف شد",
-          product: existProduct,
-        });
-    
-      } catch (error) {
-        return NextResponse.json(
-          { message: "خطا در حذف کالا" }, 
-          { status: 500 }
-        );
-      }
-}
-
-
-
-
-
-
-
-export async function POST(request:Request){
-    try{
-        const newProduct=await request.json();
-
-    const filePath=path.join(
-        process.cwd(),
-        "data",
-        "products.json"
-    )
-    const file=await fs.readFile(filePath,"utf-8")
-    const products=JSON.parse(file)
-
-
-     const existProduct=products.find(
-      (item:any)=>
-        item.id === newProduct.id
-    )
-
-    if(existProduct)
-    {
-       return NextResponse.json(
-
-        {  message: "این کالا قبلا ثبت شده است"},
-        {status: 403 },
-        );
-
-    } 
-
-            products.push(newProduct)
-
-              await fs.writeFile(
-              filePath,
-              JSON.stringify(products, null, 2)
-    );
+    if (error) {
+      console.error("GET products error:", error);
 
       return NextResponse.json(
+        {
+          message: "خطا در دریافت محصولات",
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error(error);
+
+    return NextResponse.json(
+      { message: "خطا در دریافت محصولات" },
+      { status: 500 }
+    );
+  }
+}
+
+// POST
+export async function POST(request: Request) {
+  try {
+    const newProduct = await request.json();
+
+    const { data: existingProduct, error: findError } = await supabase
+      .from("products")
+      .select("*")
+      .eq("id", newProduct.id)
+      .maybeSingle();
+
+    if (findError) {
+      console.error("Find product error:", findError);
+
+      return NextResponse.json(
+        {
+          message: "خطا در بررسی محصول",
+          error: findError.message,
+        },
+        { status: 500 }
+      );
+    }
+
+    if (existingProduct) {
+      return NextResponse.json(
+        {
+          message: "این کالا قبلا ثبت شده است",
+        },
+        { status: 403 }
+      );
+    }
+
+    const { data, error } = await supabase
+      .from("products")
+      .insert([newProduct])
+      .select()
+      .single();
+
+    if (error) {
+      console.error("POST product error:", error);
+
+      return NextResponse.json(
+        {
+          message: "خطا در افزودن کالا",
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json(
       {
         message: "کالا با موفقیت اضافه شد",
-        product: newProduct,
+        product: data,
       },
-      
-        {
-          status: 201,
-        }
+      { status: 201 }
     );
+  } catch (error) {
+    console.error(error);
 
+    return NextResponse.json(
+      { message: "خطا در افزودن کالا" },
+      { status: 500 }
+    );
+  }
+}
 
+// PUT
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
 
-  }catch (error) {
-        return NextResponse.json(
-          { message: "خطا در افزودن کالا" }, 
-          { status: 500 }
-        );
-      }
+    const { data: existingProduct, error: findError } = await supabase
+      .from("products")
+      .select("*")
+      .eq("id", body.id)
+      .maybeSingle();
 
+    if (findError) {
+      console.error("Find product error:", findError);
+
+      return NextResponse.json(
+        {
+          message: "خطا در پیدا کردن کالا",
+          error: findError.message,
+        },
+        { status: 500 }
+      );
+    }
+
+    if (!existingProduct) {
+      return NextResponse.json(
+        { message: "کالا پیدا نشد" },
+        { status: 404 }
+      );
+    }
+
+    const { data, error } = await supabase
+      .from("products")
+      .update(body)
+      .eq("id", body.id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("PUT product error:", error);
+
+      return NextResponse.json(
+        {
+          message: "خطا در تغییر اطلاعات کالا",
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({
+      message: "ویرایش انجام شد",
+      product: data,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return NextResponse.json(
+      { message: "خطا در تغییر اطلاعات کالا" },
+      { status: 500 }
+    );
+  }
+}
+
+// DELETE
+export async function DELETE(request: Request) {
+  try {
+    const body = await request.json();
+
+    const { data: existingProduct, error: findError } = await supabase
+      .from("products")
+      .select("*")
+      .eq("id", body.id)
+      .maybeSingle();
+
+    if (findError) {
+      console.error("Find product error:", findError);
+
+      return NextResponse.json(
+        {
+          message: "خطا در پیدا کردن کالا",
+          error: findError.message,
+        },
+        { status: 500 }
+      );
+    }
+
+    if (!existingProduct) {
+      return NextResponse.json(
+        { message: "کالا پیدا نشد" },
+        { status: 404 }
+      );
+    }
+
+    const { error } = await supabase
+      .from("products")
+      .delete()
+      .eq("id", body.id);
+
+    if (error) {
+      console.error("DELETE product error:", error);
+
+      return NextResponse.json(
+        {
+          message: "خطا در حذف کالا",
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({
+      message: "کالا حذف شد",
+      product: existingProduct,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return NextResponse.json(
+      { message: "خطا در حذف کالا" },
+      { status: 500 }
+    );
+  }
 }
